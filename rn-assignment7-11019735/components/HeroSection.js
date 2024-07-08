@@ -3,9 +3,8 @@ import { useContext, useState, useEffect } from "react";
 import { CartContext } from "./CartContext";
 import axios from "axios";
 
-export default function HeroSection() {
+export default function HeroSection({ navigation }) {
   const { addItemToCart } = useContext(CartContext);
-
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
@@ -14,6 +13,13 @@ export default function HeroSection() {
       .then((response) => setProducts(response.data))
       .catch((error) => console.error(error));
   }, []);
+
+  const truncateText = (text, length) => {
+    if (text.length <= length) {
+      return text;
+    }
+    return text.substring(0, length) + "...";
+  };
 
   return (
     <View style={styles.wrapper}>
@@ -35,13 +41,22 @@ export default function HeroSection() {
         </View>
       </View>
       <View style={styles.cartContainer}>
-        {products.map((item, id) => (
-          <View style={styles.card} key={id}>
+        {products.map((item) => (
+          <TouchableOpacity
+            style={styles.card}
+            key={item.id}
+            onPress={() =>
+              navigation.navigate("ProductDetails", { productId: item.id })
+            }
+          >
             <View style={styles.imageAndAddContainer}>
               <Image style={styles.productImage} source={{ uri: item.image }} />
               <TouchableOpacity
                 style={styles.addButton}
-                onPress={() => addItemToCart(item)}
+                onPress={(e) => {
+                  e.stopPropagation();
+                  addItemToCart(item);
+                }}
               >
                 <Image
                   style={styles.add}
@@ -50,11 +65,13 @@ export default function HeroSection() {
               </TouchableOpacity>
             </View>
             <View style={styles.textContainer}>
-              <Text style={styles.attireType}>{item.category}</Text>
-              <Text style={styles.description}>{item.title}</Text>
+              <Text style={styles.attireType}>{item.title}</Text>
+              <Text style={styles.description}>
+                {truncateText(item.description, 50)}
+              </Text>
               <Text style={styles.amount}>${item.price}</Text>
             </View>
-          </View>
+          </TouchableOpacity>
         ))}
       </View>
     </View>
@@ -66,7 +83,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 10,
     marginTop: 50,
-    marginBottom: 450,
+    paddingBottom: 750,
   },
   heroSectionHeader: {
     flexDirection: "row",
@@ -124,7 +141,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 10,
     marginRight: 18,
-    marginBottom: 90,
+    marginBottom: 100,
     marginLeft: 10,
   },
   imageAndAddContainer: {
@@ -140,7 +157,7 @@ const styles = StyleSheet.create({
   addButton: {
     position: "absolute",
     top: 125,
-    right: 8,
+    right: 0,
   },
   add: {
     width: 25,
@@ -150,12 +167,15 @@ const styles = StyleSheet.create({
   textContainer: {
     textAlign: "right",
     left: 14,
-    lineHeight: 20,
+  },
+  attireType: {
+    fontWeight: "bold",
   },
   description: {
     fontSize: 11,
     width: 150,
     color: "gray",
+    marginTop: 0,
   },
   amount: {
     color: "red",
