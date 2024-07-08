@@ -6,7 +6,7 @@ export default function HomeScreen({ navigation }) {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Header />
-      <HeroSection />
+      <HeroSection navigation={navigation} />
       <Button title="Go to Cart" onPress={() => navigation.navigate("Cart")} />
     </ScrollView>
   );
