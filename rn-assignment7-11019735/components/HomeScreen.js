@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Button } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import Header from "./Header";
 import HeroSection from "./HeroSection";
 
@@ -7,7 +7,6 @@ export default function HomeScreen({ navigation }) {
     <ScrollView contentContainerStyle={styles.container}>
       <Header />
       <HeroSection navigation={navigation} />
-      <Button title="Go to Cart" onPress={() => navigation.navigate("Cart")} />
     </ScrollView>
   );
 }
