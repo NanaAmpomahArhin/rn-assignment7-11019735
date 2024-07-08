@@ -1,9 +1,19 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import { CartContext } from "./CartContext";
-import { cartData } from "../Data/HomeScreenHeroSectionData";
+import axios from "axios";
+
 export default function HeroSection() {
   const { addItemToCart } = useContext(CartContext);
+
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("https://fakestoreapi.com/products")
+      .then((response) => setProducts(response.data))
+      .catch((error) => console.error(error));
+  }, []);
 
   return (
     <View style={styles.wrapper}>
@@ -25,10 +35,10 @@ export default function HeroSection() {
         </View>
       </View>
       <View style={styles.cartContainer}>
-        {cartData.map((item, id) => (
+        {products.map((item, id) => (
           <View style={styles.card} key={id}>
             <View style={styles.imageAndAddContainer}>
-              <Image source={item.image} />
+              <Image style={styles.productImage} source={{ uri: item.image }} />
               <TouchableOpacity
                 style={styles.addButton}
                 onPress={() => addItemToCart(item)}
@@ -40,9 +50,9 @@ export default function HeroSection() {
               </TouchableOpacity>
             </View>
             <View style={styles.textContainer}>
-              <Text style={styles.attireType}>{item.attireType}</Text>
-              <Text style={styles.description}>{item.description}</Text>
-              <Text style={styles.amount}>${item.amount}</Text>
+              <Text style={styles.attireType}>{item.category}</Text>
+              <Text style={styles.description}>{item.title}</Text>
+              <Text style={styles.amount}>${item.price}</Text>
             </View>
           </View>
         ))}
@@ -56,7 +66,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 10,
     marginTop: 50,
-    marginBottom: 260,
+    marginBottom: 450,
   },
   heroSectionHeader: {
     flexDirection: "row",
@@ -113,16 +123,23 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 10,
-    marginRight: 15,
+    marginRight: 18,
     marginBottom: 90,
-    marginLeft: 15,
+    marginLeft: 10,
   },
   imageAndAddContainer: {
     position: "relative",
   },
+  productImage: {
+    width: 150,
+    height: 150,
+    resizeMode: "contain",
+    left: -15,
+    bottom: 5,
+  },
   addButton: {
     position: "absolute",
-    top: 185,
+    top: 125,
     right: 8,
   },
   add: {
@@ -132,12 +149,12 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     textAlign: "right",
-    left: 20,
+    left: 14,
     lineHeight: 20,
   },
   description: {
-    fontSize: 13,
-    width: 200,
+    fontSize: 11,
+    width: 150,
     color: "gray",
   },
   amount: {
