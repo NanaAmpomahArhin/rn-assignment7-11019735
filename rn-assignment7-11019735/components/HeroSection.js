@@ -1,9 +1,11 @@
+import React, { useContext, useEffect, useState } from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
-import { useContext, useState, useEffect } from "react";
+import { useNavigation } from "@react-navigation/native";
 import { CartContext } from "./CartContext";
 import axios from "axios";
 
-export default function HeroSection({ navigation }) {
+export default function HeroSection({ product }) {
+  const navigation = useNavigation();
   const { addItemToCart } = useContext(CartContext);
   const [products, setProducts] = useState([]);
 
@@ -13,6 +15,10 @@ export default function HeroSection({ navigation }) {
       .then((response) => setProducts(response.data))
       .catch((error) => console.error(error));
   }, []);
+
+  const navigateToProductDetails = (productId) => {
+    navigation.navigate("ProductDetails", { productId });
+  };
 
   const truncateText = (text, length) => {
     if (text.length <= length) {
@@ -45,9 +51,7 @@ export default function HeroSection({ navigation }) {
           <TouchableOpacity
             style={styles.card}
             key={item.id}
-            onPress={() =>
-              navigation.navigate("ProductDetails", { productId: item.id })
-            }
+            onPress={() => navigateToProductDetails(item.id)}
           >
             <View style={styles.imageAndAddContainer}>
               <Image style={styles.productImage} source={{ uri: item.image }} />
