@@ -1,27 +1,27 @@
-import HomeScreen from "./components/HomeScreen";
-import { createStackNavigator } from "@react-navigation/stack";
+import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 import CartProvider from "./components/CartContext";
 import CartScreen from "./components/CartScreen";
-import ProductDetailsScreen from "./components/ProductDetailsScreen";
+import ProductStackNavigator from "./components/ProductStackNavigator";
+import CustomDrawerContent from "./components/CustomDrawerContent";
+import HomeScreen from "./components/HomeScreen";
 
-const Stack = createStackNavigator();
+const Drawer = createDrawerNavigator();
 
 export default function App() {
   return (
     <CartProvider>
       <NavigationContainer>
-        <Stack.Navigator
+        <Drawer.Navigator
           initialRouteName="Home"
+          drawerContent={(props) => <CustomDrawerContent {...props} />}
           screenOptions={{ headerShown: false }}
         >
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="Cart" component={CartScreen} />
-          <Stack.Screen
-            name="ProductDetails"
-            component={ProductDetailsScreen}
-          />
-        </Stack.Navigator>
+          <Drawer.Screen name="Home" component={HomeScreen} />
+          <Drawer.Screen name="Cart" component={CartScreen} />
+          <Drawer.Screen name="Products" component={ProductStackNavigator} />
+        </Drawer.Navigator>
       </NavigationContainer>
     </CartProvider>
   );
