@@ -14,7 +14,7 @@ export default function CartScreen({ navigation }) {
   const { cartItem, removeItemFromCart } = useContext(CartContext);
 
   const calculateTotal = () => {
-    return cartItem.reduce((total, item) => total + item.amount, 0);
+    return cartItem.reduce((total, item) => total + item.price, 0);
   };
 
   return (
@@ -47,16 +47,15 @@ export default function CartScreen({ navigation }) {
             renderItem={({ item }) => (
               <View style={styles.itemContainer}>
                 <View style={styles.imageContainer}>
-                  <Image source={item.image} style={styles.itemImage} />
+                  <Image
+                    source={{ uri: item.image }}
+                    style={styles.itemImage}
+                  />
                 </View>
                 <View style={styles.textAndRemoveContainer}>
-                  <Text style={styles.attireType}>
-                    {item.attireType.toUpperCase()}
-                  </Text>
-                  <Text style={styles.description}>
-                    {item.actualDescription}
-                  </Text>
-                  <Text style={styles.amount}>${item.amount}</Text>
+                  <Text style={styles.attireType}>{item.category}</Text>
+                  <Text style={styles.description}>{item.title}</Text>
+                  <Text style={styles.amount}>${item.price}</Text>
                   <TouchableOpacity
                     onPress={() => removeItemFromCart(item)}
                     style={styles.removeButton}
@@ -136,7 +135,7 @@ const styles = StyleSheet.create({
   itemContainer: {
     flexDirection: "row",
     marginLeft: 10,
-    marginBottom: -10,
+    marginBottom: -20,
   },
   imageContainer: {
     width: 150,
@@ -144,23 +143,24 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
   itemImage: {
-    width: "80%",
-    height: "80%",
+    width: "60%",
+    height: "60%",
   },
   textAndRemoveContainer: {
     flexDirection: "column",
-    marginTop: 40,
-    marginLeft: -19,
+    marginTop: 30,
+    marginLeft: -55,
   },
   attireType: {
-    fontSize: 18,
+    fontSize: 15,
   },
   description: {
-    fontSize: 14,
+    fontSize: 11,
+    width: 250,
     color: "gray",
   },
   amount: {
-    fontSize: 18,
+    fontSize: 15,
     color: "red",
   },
   removeButton: {
@@ -173,24 +173,24 @@ const styles = StyleSheet.create({
   },
   totalContainer: {
     flexDirection: "row",
+    width: 330,
     marginTop: 20,
     padding: 10,
-    marginLeft: -40,
+    marginLeft: 0,
     marginBottom: 0,
-    justifyContent: "center",
+    justifyContent: "space-between",
     alignItems: "center",
   },
   estimate: {
     fontSize: 20,
     color: "gray",
-    marginRight: 120,
   },
   totalText: {
     fontSize: 24,
     color: "red",
   },
   checkoutContainer: {
-    width: 400,
+    width: 358,
     height: 70,
     flexDirection: "row",
     alignItems: "center",
