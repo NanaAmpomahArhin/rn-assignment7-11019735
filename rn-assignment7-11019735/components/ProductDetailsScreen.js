@@ -80,6 +80,9 @@ export default function ProductDetailsScreen({ route }) {
           <Text style={styles.deliveryTime}>Estimated to be delivered on</Text>
           <Text style={styles.deliveryTime}>09/11/2021 - 12/11/2021.</Text>
         </View>
+        <View>
+          <Image source={require("../assets/Up.png")} style={styles.upIcon} />
+        </View>
       </View>
       <View style={styles.basketContainer}>
         <Image source={require("../assets/Plus.png")} style={styles.plusIcon} />
@@ -138,8 +141,8 @@ const styles = StyleSheet.create({
   exportIconContainer: {
     width: 20,
     height: 20,
-    top: -35,
-    left: -20,
+    top: -65,
+    left: -10,
   },
   exportIcon: {
     width: "100%",
@@ -200,6 +203,11 @@ const styles = StyleSheet.create({
   },
   deliveryTime: {
     fontSize: 13,
+  },
+  upIcon: {
+    width: 30,
+    height: 30,
+    left: 80,
   },
   basketContainer: {
     flexDirection: "row",
