@@ -145,11 +145,12 @@ const styles = StyleSheet.create({
   itemImage: {
     width: "60%",
     height: "60%",
+    resizeMode: "contain",
   },
   textAndRemoveContainer: {
     flexDirection: "column",
     marginTop: 30,
-    marginLeft: -55,
+    marginLeft: -50,
   },
   attireType: {
     fontSize: 15,
